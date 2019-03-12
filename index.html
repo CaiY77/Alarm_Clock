@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <link rel="stylesheet" href="css/main.css">
+  <link href='https://fonts.googleapis.com/css?family=Orbitron' rel='stylesheet' type='text/css'>
+
+  <meta charset="utf-8">
+  <title>Alarm</title>
+</head>
+
+<body>
+
+  <form name="clock">
+    <div class="grid">
+      <div class="date">Alarm Clock</div>
+      <div class="timeNow" id="time"></div>
+      <input class="input" type="datetime-local" name="date" id="date">
+      <div class="alarm button" onclick="alarm();">Set Alarm</div>
+      <div class="stop button" onclick="stop()">Stop Alarm</div>
+      <div class="get button" onclick="getDate()">Time Now</div>
+    </div>
+
+  </form>
+
+  <script type="text/javascript">
+    let now;
+    let milSec;
+    let mkDate;
+    let UTC;
+    let timeLeft;
+    let sound = new Audio();
+    sound.src = 'images/alarm.mp3';
+
+    function alarm() {
+      milSec = document.getElementById('date').valueAsNumber; // converts date to number(miliseconds)
+      mkDate = new Date(milSec);
+      UTC = new Date(mkDate.getUTCFullYear(), mkDate.getUTCMonth(), mkDate.getUTCDate(), mkDate.getUTCHours(), mkDate.getUTCMinutes(), mkDate.getUTCSeconds());
+      timeLeft = UTC.getTime() - (new Date()).getTime();
+
+      setTimeout(beep, timeLeft);
+
+    }
+
+    function beep() {
+      sound.play();
+    }
+
+    function stop() {
+      sound.pause();
+    }
+
+    function getDate() {
+      now = (new Date()).toLocaleString("en-US", {
+        timeZone: "America/New_York"
+      });
+      document.getElementById('time').innerHTML = now;
+      setTimeout(getDate,1000);
+
+    }
+  </script>
+</body>
+
+</html>
